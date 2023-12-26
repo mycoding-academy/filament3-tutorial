@@ -14,6 +14,7 @@ use Spatie\Permission\Traits\HasRoles;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Filament\Models\Contracts\FilamentUser;
 use App\Traits\HasLevel;
+use Illuminate\Auth\MustVerifyEmail;
 
 class User extends Authenticatable implements HasAvatar, FilamentUser
 {
@@ -25,6 +26,7 @@ class User extends Authenticatable implements HasAvatar, FilamentUser
     use HasRoles;
     use HasPanelShield;
     use HasLevel;
+    use MustVerifyEmail;
 
     /**
      * The attributes that are mass assignable.
@@ -35,6 +37,7 @@ class User extends Authenticatable implements HasAvatar, FilamentUser
         'name',
         'email',
         'password',
+        'profile_photo_path',
     ];
 
     /**

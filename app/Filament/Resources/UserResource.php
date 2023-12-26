@@ -10,6 +10,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Collection;
@@ -100,7 +102,15 @@ class UserResource extends Resource implements HasShieldPermissions
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple(),
+                TernaryFilter::make('Email_verified_at')
+                    ->label('Verified')
+                    ->nullable()
+                    ->placeholder('All users')
+                    ->trueLabel('Verified users')
+                    ->falseLabel('Not verified users')
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
