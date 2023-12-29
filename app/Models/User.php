@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -25,6 +27,7 @@ class User extends Authenticatable implements HasAvatar, FilamentUser
     use HasRoles;
     use HasPanelShield;
     use HasLevel;
+    use MustVerifyEmail;
 
     /**
      * The attributes that are mass assignable.
@@ -35,6 +38,7 @@ class User extends Authenticatable implements HasAvatar, FilamentUser
         'name',
         'email',
         'password',
+        'profile_photo_path',
     ];
 
     /**
@@ -67,6 +71,23 @@ class User extends Authenticatable implements HasAvatar, FilamentUser
         'profile_photo_url',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($record) {
+            if ($record->isDirty('profile_photo_path')) {
+                $oldAvatar = $record->getOriginal('profile_photo_path');
+                if ($oldAvatar) {
+                    Storage::disk('public')->delete($oldAvatar);
+                }
+            }
+        });
+    }
+
+    /**
+     * Get the user's avatar URL.
+     */
     public function getFilamentAvatarUrl(): ?string
     {
         return $this->profile_photo_url;
