@@ -3,21 +3,18 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Table;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Eloquent\Model;
-use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 
 class UserResource extends Resource implements HasShieldPermissions
 {
@@ -68,7 +65,7 @@ class UserResource extends Resource implements HasShieldPermissions
                     ->relationship('roles', 'name')
                     ->multiple()
                     ->preload()
-                    ->searchable()
+                    ->searchable(),
             ]);
     }
 
@@ -76,10 +73,10 @@ class UserResource extends Resource implements HasShieldPermissions
     {
         return $table
             ->columns([Tables\Columns\ImageColumn::make('profile_photo_path')
-                    ->label('Avatar')
-                    ->circular()
-                    ->defaultImageUrl(url('/storage/profile-photos/no-photo.jpg'))
-                    ->toggleable(isToggledHiddenByDefault: true),
+                ->label('Avatar')
+                ->circular()
+                ->defaultImageUrl(url('/storage/profile-photos/no-photo.jpg'))
+                ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
@@ -90,8 +87,7 @@ class UserResource extends Resource implements HasShieldPermissions
                     ->sortable(),
                 Tables\Columns\TextColumn::make('roleNames')
                     ->label('Roles')
-                    ->badge()->separator(',')
-,
+                    ->badge()->separator(','),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -110,7 +106,7 @@ class UserResource extends Resource implements HasShieldPermissions
                     ->nullable()
                     ->placeholder('All users')
                     ->trueLabel('Verified users')
-                    ->falseLabel('Not verified users')
+                    ->falseLabel('Not verified users'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -128,16 +124,15 @@ class UserResource extends Resource implements HasShieldPermissions
                                 ->maxLength(30),
                         ])
                         ->action(function (Collection $records, array $data): void {
-                            foreach($records as $record)
-                            {
+                            foreach ($records as $record) {
                                 $record->password = Hash::make($data['password']);
                                 $record->save();
                             }
 
                         })
                         ->deselectRecordsAfterCompletion()
-                        ->icon('heroicon-s-key')
-                        
+                        ->icon('heroicon-s-key'),
+
                 ]),
             ])->checkIfRecordIsSelectableUsing(
                 fn (Model $record): bool => auth()->user()->hasHigherLevelThan($record->level) || $record->is(auth()->user()),
