@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Filament\Forms\Components\FileUpload;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -10,7 +11,6 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
-use Filament\Forms\Components\FileUpload;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -46,12 +46,12 @@ class AdminPanelProvider extends PanelProvider
                         hasAvatars: true, // Enables the avatar upload form component (default = false)
                         slug: 'my-profile'
                     )
-                    ->avatarUploadComponent(fn() => FileUpload::make('profile_photo_path')
+                    ->avatarUploadComponent(fn () => FileUpload::make('profile_photo_path')
                         //->disk('public')
                         ->directory('profile-photos')
                         ->avatar()
                         ->imageEditor()
-                        )
+                    ),
             ])
             ->pages([
                 Pages\Dashboard::class,

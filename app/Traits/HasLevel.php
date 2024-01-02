@@ -8,7 +8,7 @@ trait HasLevel
     {
         return $this->level();
     }
-    
+
     public function level(): int
     {
         return ($role = $this->roles->sortByDesc('level')->first()) ? $role->level : 0;

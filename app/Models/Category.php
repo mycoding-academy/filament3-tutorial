@@ -39,7 +39,7 @@ class Category extends Model
             Storage::disk('public')->delete($imagePath);
         }
     }
-    
+
     public function products()
     {
         return $this->hasMany(Product::class);

@@ -17,7 +17,7 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         $name = $this->faker->unique()->words(2, true);
-        
+
         return [
             'name' => $name,
             'slug' => \Illuminate\Support\Str::slug($name),
