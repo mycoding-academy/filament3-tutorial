@@ -1,3 +1,5 @@
+[![Test](https://github.com/mycoding-academy/filament3-tutorial/actions/workflows/laravel.yml/badge.svg)](https://github.com/mycoding-academy/filament3-tutorial/actions/workflows/laravel.yml)
+
 ## Filament 3 Tutorial Source for YouTube Playlist "Filament 3 Tutorial"
 [Filament 3 Tutorial on YouTube](https://www.youtube.com/playlist?list=PLt4COWeYegICDpqiZrlQ9L63R3JXSuWgd)
 - EP01 การติดตั้ง Filament 3 ใช้งานร่วมกับ Jetstream และ Filament-Shield
